@@ -1,3 +1,4 @@
+// In blackListToken.model.js
 const mongoose = require('mongoose');
 
 const blacklistTokenSchema = new mongoose.Schema({
@@ -13,4 +14,5 @@ const blacklistTokenSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('BlacklistToken', blacklistTokenSchema);
+// Export the schema and compile the model only if it hasn't been compiled yet
+module.exports = mongoose.models.BlacklistToken || mongoose.model('BlacklistToken', blacklistTokenSchema);

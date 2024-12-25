@@ -22,5 +22,5 @@ const CaptainLogout = () => {
     </div>
   )
 }
-
+ 
 export default CaptainLogout

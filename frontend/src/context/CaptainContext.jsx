@@ -1,44 +1,40 @@
-import { createContext,useState } from 'react'
+// CaptainContext.jsx
+import { createContext, useState, useCallback } from 'react';
 
-export const CaptainDataContext = createContext()
+export const CaptainDataContext = createContext();
 
-//note: also removed useContext from import
-// const useCaptain = ()=>{
-//     const context = useContext(captainDataContext);
-//     if(!context){
-//         throw new Error('useCaptain must be used within a CaptainProvider');
-//     } 
-//     return context;
-// }
-
-const CaptainContext = ({children}) => {
+const CaptainContext = ({ children }) => {
     const [captain, setCaptain] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const updateCaptain = (newCaptain) => {
-        setCaptain(newCaptain);
-    };
+    const updateCaptain = useCallback((captainData) => {
+        setCaptain(captainData);
+        setIsLoading(false);
+        setError(null);
+    }, []);
+
+    const clearCaptain = useCallback(() => {
+        setCaptain(null);
+        setIsLoading(false);
+        setError(null);
+    }, []);
 
     const value = {
         captain,
-        setCaptain,
+        setCaptain: updateCaptain,
+        clearCaptain,
         isLoading,
         setIsLoading,
         error,
-        setError,
-        updateCaptain
+        setError
     };
 
     return (
-        <div>
-          <CaptainDataContext.Provider value={value}>
+        <CaptainDataContext.Provider value={value}>
             {children}
-          </CaptainDataContext.Provider>
-        </div>
-      )
-}
+        </CaptainDataContext.Provider>
+    );
+};
 
-
-
-export default CaptainContext
+export default CaptainContext;
